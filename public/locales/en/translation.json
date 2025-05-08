@@ -1,0 +1,295 @@
+{
+    "app": {
+      "name": "HeatSafe",
+      "tagline": "Stay Safe from Extreme Heat"
+    },
+    "nav": {
+      "home": "Home",
+      "heatMap": "Heat Map",
+      "tips": "Tips",
+      "reportIssue": "Report Issue",
+      "profile": "Profile",
+      "admin": "Admin Panel",
+      "back": "Back to Home"
+    },
+    "home": {
+      "hero": {
+        "title": "Stay Safe from Extreme Heat — Get Real-time Heat Risk Alerts & Tips!",
+        "subtitle": "AI-powered insights to help you navigate high-heat areas safely.",
+        "checkHeatIndex": "Check Heat Index in My Area",
+        "signIn": "Sign In / Create Account",
+        "myProfile": "My Profile",
+        "signOut": "Sign Out"
+      },
+      "features": {
+        "title": "How HeatSafe Helps You",
+        "realTimeAlerts": {
+          "title": "Real-time Heat Alerts",
+          "description": "Get accurate heat index calculations based on temperature, humidity, and UV index to know when conditions are dangerous."
+        },
+        "safeRoutes": {
+          "title": "Heat-Safe Route Planning",
+          "description": "Find the safest routes that maximize shade, access to cooling facilities, and minimize heat exposure during your journeys.",
+          "cta": "Plan your route →"
+        },
+        "communityReporting": {
+          "title": "Community Reporting",
+          "description": "Report and view heat hazards in your area, such as lack of shade, broken water fountains, or dangerously hot surfaces."
+        },
+        "aiTips": {
+          "title": "AI Safety Tips",
+          "description": "Receive personalized recommendations based on your location, the current heat conditions, and your planned activities."
+        }
+      },
+      "cta": {
+        "title": "Stay Safe During Heat Waves",
+        "description": "Heat-related illnesses are preventable. Get personalized heat safety recommendations, location-specific alerts, and emergency tips.",
+        "checkHeatMap": "Check Heat Map",
+        "findRoutes": "Find Shaded Routes"
+      }
+    },
+    "auth": {
+      "signIn": {
+        "title": "Sign In",
+        "googleButton": "Continue with Google",
+        "or": "or",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter your email",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "button": "Sign In",
+        "signingIn": "Signing In...",
+        "noAccount": "Don't have an account?",
+        "signUp": "Sign Up"
+      },
+      "signUp": {
+        "title": "Create Account",
+        "googleButton": "Continue with Google",
+        "or": "or",
+        "nameLabel": "Full Name",
+        "namePlaceholder": "Enter your full name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter your email",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Create a password",
+        "confirmPasswordLabel": "Confirm Password",
+        "confirmPasswordPlaceholder": "Confirm your password",
+        "button": "Sign Up",
+        "creatingAccount": "Creating Account...",
+        "haveAccount": "Already have an account?",
+        "signIn": "Sign In"
+      },
+      "errors": {
+        "invalidCredentials": "Invalid email or password. Please try again.",
+        "tooManyAttempts": "Too many failed login attempts. Please try again later or reset your password.",
+        "genericLogin": "Failed to login. Please check your credentials.",
+        "googleSignIn": "Failed to sign in with Google. Please try again.",
+        "emailInUse": "Email is already in use. Please use a different email or sign in.",
+        "weakPassword": "Password is too weak. Please use a stronger password.",
+        "genericSignup": "Failed to create account. Please try again.",
+        "passwordsNotMatch": "Passwords do not match"
+      }
+    },
+    "heatMap": {
+      "title": "Heat Map",
+      "searchPlaceholder": "Enter a location (e.g., London, Tokyo, New York)",
+      "searchButton": "Search",
+      "currentWeather": "Current Weather",
+      "heatRisk": {
+        "title": "Heat Risk Assessment",
+        "heatIndex": "Heat Index",
+        "riskLevel": "Risk Level",
+        "extremeDanger": "Extreme Danger",
+        "danger": "Danger",
+        "caution": "Caution",
+        "safe": "Safe"
+      },
+      "mapTitle": "Heat Risk Map",
+      "mapDescription": "Visualizing temperature variations and heat risk zones in this area",
+      "loading": "Loading...",
+      "error": "Error loading data. Please try again.",
+      "noLocation": "Enter a location to view heat risk information."
+    },
+    "tips": {
+      "title": "Heat Safety Tips",
+      "intro": "Extreme heat can pose serious health risks. Follow these tips to stay safe during hot weather and recognize the signs of heat-related illness.",
+      "preventionTitle": "Prevention Tips",
+      "recognizingTitle": "Recognizing Heat Illness",
+      "resourcesTitle": "Additional Resources",
+      "resourcesIntro": "For more information on heat safety, visit these resources:",
+      "categories": {
+        "hydration": "Hydration",
+        "clothing": "Clothing",
+        "activityPlanning": "Activity Planning",
+        "sunProtection": "Sun Protection",
+        "homeSafety": "Home Safety"
+      },
+      "heatIllness": {
+        "condition": "Condition",
+        "symptoms": "Symptoms",
+        "whatToDo": "What To Do"
+      }
+    },
+    "reportIssue": {
+      "title": "Report Heat Issue",
+      "intro": "Help make your community safer by reporting heat-related issues. Your reports help us identify areas that need attention and resources.",
+      "thankYou": "Thank you for your report!",
+      "submissionHelps": "Your submission helps make our community safer during extreme heat events.",
+      "submitAnother": "Submit Another Report",
+      "viewMyReports": "View My Reports",
+      "loginRequired": {
+        "title": "You need to be logged in to submit a report.",
+        "action": "Please sign in or create an account first."
+      },
+      "form": {
+        "issueType": {
+          "label": "Issue Type",
+          "placeholder": "Select an issue type",
+          "brokenWater": "Broken Water Fountain",
+          "noShade": "No Shade Available",
+          "hotPavement": "Dangerously Hot Pavement",
+          "coolingCenter": "Cooling Center Issue",
+          "other": "Other"
+        },
+        "location": {
+          "label": "Location",
+          "placeholder": "Enter location or address",
+          "useMyLocation": "Use My Location",
+          "detecting": "Detecting your location...",
+          "hint": "Type an address to see suggestions or use your current location."
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Please describe the issue in detail"
+        },
+        "severity": {
+          "label": "Severity",
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High"
+        },
+        "contactEmail": {
+          "label": "Contact Email",
+          "placeholder": "Your email (optional)",
+          "hint": "We'll only use this to follow up about this specific report if needed."
+        },
+        "submitButton": "Submit Report",
+        "submitting": "Submitting..."
+      },
+      "errors": {
+        "requiredFields": "Please fill out all required fields.",
+        "loginRequired": "You must be logged in to submit a report.",
+        "submitFailed": "Failed to submit report. Please try again later.",
+        "locationFailed": "Unable to detect location. Please enter manually.",
+        "noGeolocation": "Geolocation is not supported by your browser."
+      }
+    },
+    "profile": {
+      "title": "My Profile",
+      "notifications": {
+        "title": "Notification Preferences",
+        "heatWarnings": "Heat warnings & alerts",
+        "airQuality": "Air quality alerts"
+      },
+      "privacy": {
+        "title": "Privacy Settings",
+        "saveHistory": "Save search history",
+        "shareLocation": "Share location data for better recommendations"
+      },
+      "display": {
+        "title": "Display Preferences",
+        "temperatureUnit": "Temperature Unit",
+        "celsius": "Celsius (°C)",
+        "fahrenheit": "Fahrenheit (°F)"
+      },
+      "saveSuccess": "Preferences saved successfully!",
+      "saveButton": "Save Preferences",
+      "saving": "Saving...",
+      "signOut": "Sign Out",
+      "signingOut": "Signing Out...",
+      "reports": {
+        "title": "My Reports",
+        "noReports": "You haven't submitted any heat hazard reports yet.",
+        "submitReport": "Submit a Report",
+        "filterByStatus": "Filter by status:",
+        "all": "All Reports",
+        "columns": {
+          "issueType": "Issue Type",
+          "location": "Location",
+          "dateReported": "Date Reported",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "severity": "Severity",
+        "viewDetails": "View Details"
+      },
+      "reportDetails": {
+        "title": "Report Details",
+        "reportId": "Report ID",
+        "issueType": "Issue Type",
+        "severity": "Severity",
+        "description": "Description",
+        "location": "Location",
+        "reportedBy": "Reported By",
+        "contactEmail": "Contact Email",
+        "dateReported": "Date Reported",
+        "currentStatus": "Current Status",
+        "statusUpdates": "Status Updates",
+        "noStatusUpdates": "No status updates yet. We'll notify you when there are changes to your report."
+      }
+    },
+    "safeRoute": {
+      "title": "Heat-Safe Route Planner",
+      "form": {
+        "startLabel": "Starting Point",
+        "startPlaceholder": "Enter starting location",
+        "destLabel": "Destination",
+        "destPlaceholder": "Enter destination",
+        "findRoutes": "Find Heat-Safe Routes",
+        "findingRoutes": "Finding Routes..."
+      },
+      "currentConditions": {
+        "title": "Current Conditions",
+        "feelsLike": "Feels Like",
+        "humidity": "Humidity",
+        "wind": "Wind",
+        "heatIndex": "Heat Index",
+        "danger": "Danger: Extreme heat conditions",
+        "warning": "Warning: High heat risk",
+        "caution": "Caution: Moderate heat risk",
+        "low": "Low heat risk"
+      },
+      "tips": {
+        "title": "Heat Safety Tips"
+      },
+      "routes": {
+        "title": "Available Routes",
+        "fastest": "Fastest",
+        "heatRisk": "Heat Risk",
+        "distance": "Distance",
+        "time": "Est. Time",
+        "shadeCoverage": "Shade Coverage",
+        "overview": "Route Overview",
+        "moreSteps": "more steps"
+      }
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "inProgress": "In Progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "common": {
+      "required": "Required",
+      "loading": "Loading...",
+      "notFound": {
+        "title": "Page Not Found",
+        "message": "The page you're looking for doesn't exist or has been moved."
+      },
+      "accessRestricted": {
+        "title": "Access Restricted",
+        "message": "You do not have permission to access the admin panel."
+      }
+    }
+  }

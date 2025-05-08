@@ -1,5 +1,6 @@
-// src/pages/ReportIssuePage.jsx
+// src/pages/ReportIssuePage.jsx - Improved UI with matching colors
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../config/firebase';
@@ -7,6 +8,7 @@ import { collection, addDoc, Timestamp, GeoPoint } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
 const ReportIssuePage = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     issueType: '',
@@ -75,11 +77,52 @@ const ReportIssuePage = () => {
   };
 
   const issueTypes = [
-    { value: 'broken_water', label: 'Broken Water Fountain' },
-    { value: 'no_shade', label: 'No Shade Available' },
-    { value: 'hot_pavement', label: 'Dangerously Hot Pavement' },
-    { value: 'cooling_center', label: 'Cooling Center Issue' },
-    { value: 'other', label: 'Other' }
+    { 
+      value: 'broken_water', 
+      label: t('reportIssue.form.issueType.brokenWater'), 
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      )
+    },
+    { 
+      value: 'no_shade', 
+      label: t('reportIssue.form.issueType.noShade'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      )
+    },
+    { 
+      value: 'hot_pavement', 
+      label: t('reportIssue.form.issueType.hotPavement'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+        </svg>
+      )
+    },
+    { 
+      value: 'cooling_center', 
+      label: t('reportIssue.form.issueType.coolingCenter'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      )
+    },
+    { 
+      value: 'other', 
+      label: t('reportIssue.form.issueType.other'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    }
   ];
 
   const handleChange = (e) => {
@@ -124,12 +167,12 @@ const ReportIssuePage = () => {
         },
         (error) => {
           console.error('Error getting location:', error);
-          setError('Unable to detect location. Please enter manually.');
+          setError(t('reportIssue.errors.locationFailed'));
           setUseCurrentLocation(false);
         }
       );
     } else {
-      setError('Geolocation is not supported by your browser.');
+      setError(t('reportIssue.errors.noGeolocation'));
     }
   };
 
@@ -138,12 +181,12 @@ const ReportIssuePage = () => {
 
     // Validate form
     if (!formData.issueType || !formData.location || !formData.description) {
-      setError('Please fill out all required fields.');
+      setError(t('reportIssue.errors.requiredFields'));
       return;
     }
 
     if (!user) {
-      setError('You must be logged in to submit a report.');
+      setError(t('reportIssue.errors.loginRequired'));
       return;
     }
 
@@ -152,7 +195,6 @@ const ReportIssuePage = () => {
 
     try {
       // Create report object
-      // In handleSubmit function, modify the reportData object:
       const reportData = {
         issueType: formData.issueType,
         description: formData.description,
@@ -177,13 +219,10 @@ const ReportIssuePage = () => {
           note: 'Report submitted'
         }]
       };
+      
       // Save to Firestore
       const docRef = await addDoc(collection(db, "heatHazardReports"), reportData);
-      console.log('Report submitted with these details:', {
-        id: docRef.id,
-        userId: reportData.userId,
-        collection: "heatHazardReports"
-      });
+      console.log('Report submitted with ID:', docRef.id);
 
       setSubmitted(true);
 
@@ -199,7 +238,7 @@ const ReportIssuePage = () => {
       setUseCurrentLocation(false);
     } catch (err) {
       console.error('Error submitting report:', err);
-      setError('Failed to submit report. Please try again later.');
+      setError(t('reportIssue.errors.submitFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -211,7 +250,7 @@ const ReportIssuePage = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-navy-900">Report Heat Issue</h1>
+          <h1 className="text-3xl font-bold text-navy-900">{t('reportIssue.title')}</h1>
           <Link
             to="/"
             className="bg-white hover:bg-gray-100 text-navy-900 font-semibold py-2 px-4 rounded-lg border border-gray-300 transition duration-300 flex items-center"
@@ -219,146 +258,216 @@ const ReportIssuePage = () => {
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to Home
+            {t('nav.back')}
           </Link>
         </div>
 
         {/* Introduction */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <p className="text-lg">
-            Help make your community safer by reporting heat-related issues. Your reports help
-            us identify areas that need attention and resources.
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg shadow-md p-6 mb-8">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div className="bg-white rounded-full p-4 hidden md:flex items-center justify-center">
+              <svg className="w-16 h-16 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div className="text-white">
+              <h2 className="text-2xl font-semibold mb-2">{t('reportIssue.title')}</h2>
+              <p className="text-white/90 text-lg">
+                {t('reportIssue.intro')}
+              </p>
+            </div>
+          </div>
         </div>
 
         {submitted ? (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            <p className="font-semibold">Thank you for your report!</p>
-            <p>Your submission helps make our community safer during extreme heat events.</p>
-            <div className="mt-4 flex space-x-4">
+          <div className="bg-green-50 border border-green-200 rounded-lg shadow-md p-8 text-center">
+            <div className="bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+              <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-green-800 mb-2">{t('reportIssue.thankYou')}</h3>
+            <p className="text-gray-700 text-lg mb-8">{t('reportIssue.submissionHelps')}</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => setSubmitted(false)}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300"
               >
-                Submit Another Report
+                {t('reportIssue.submitAnother')}
               </button>
               <Link
                 to="/profile"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300"
               >
-                View My Reports
+                {t('reportIssue.viewMyReports')}
               </Link>
             </div>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow-md p-6">
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                {error}
+              <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg mb-6 flex items-start">
+                <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{error}</span>
               </div>
             )}
 
             {!user && (
-              <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-                <p className="font-semibold">You need to be logged in to submit a report.</p>
-                <p>Please <Link to="/" className="underline font-medium">sign in or create an account</Link> first.</p>
+              <div className="bg-amber-100 border border-amber-300 text-amber-800 px-6 py-4 rounded-lg mb-6 flex items-start">
+                <svg className="w-6 h-6 text-amber-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p className="font-semibold">{t('reportIssue.loginRequired.title')}</p>
+                  <p>{t('reportIssue.loginRequired.action')} <Link to="/" className="underline font-medium text-amber-800">Sign in</Link></p>
+                </div>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-8">
               {/* Issue Type */}
               <div>
-                <label htmlFor="issueType" className="block text-sm font-medium text-gray-700 mb-1">
-                  Issue Type <span className="text-red-600">*</span>
+                <label className="block text-lg font-medium text-gray-800 mb-3">
+                  {t('reportIssue.form.issueType.label')} <span className="text-red-600">*</span>
                 </label>
-                <select
-                  id="issueType"
-                  name="issueType"
-                  value={formData.issueType}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select an issue type</option>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {issueTypes.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
-                    </option>
+                    <div
+                      key={type.value}
+                      className={`border rounded-lg p-4 flex flex-col items-center text-center cursor-pointer transition-colors ${
+                        formData.issueType === type.value
+                          ? 'bg-amber-50 border-amber-400 text-amber-800'
+                          : 'border-gray-200 hover:border-amber-300 hover:bg-amber-50/50'
+                      }`}
+                      onClick={() => setFormData(prev => ({ ...prev, issueType: type.value }))}
+                    >
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-colors ${
+                        formData.issueType === type.value
+                          ? 'bg-amber-100 text-amber-700'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        {type.icon}
+                      </div>
+                      <span className="text-sm font-medium">{type.label}</span>
+                    </div>
                   ))}
-                </select>
+                </div>
               </div>
 
               {/* Location */}
-              <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-                  Location <span className="text-red-600">*</span>
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-6">
+                <label htmlFor="location" className="block text-lg font-medium text-gray-800 mb-3">
+                  {t('reportIssue.form.location.label')} <span className="text-red-600">*</span>
                 </label>
-                <div className="flex space-x-2">
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    placeholder="Enter location or address"
-                    className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                    disabled={useCurrentLocation && !formData.location}
-                  />
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-grow">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        placeholder={t('reportIssue.form.location.placeholder')}
+                        className="w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-white pl-10"
+                        required
+                        disabled={useCurrentLocation && !formData.location}
+                      />
+                      <svg className="w-5 h-5 text-gray-500 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    {useCurrentLocation && !formData.location && (
+                      <div className="mt-2 text-blue-600 flex items-center">
+                        <svg className="w-4 h-4 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span className="text-sm">{t('reportIssue.form.location.detecting')}</span>
+                      </div>
+                    )}
+                  </div>
                   <button
                     type="button"
                     onClick={handleLocationDetection}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg flex items-center"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-5 rounded-lg flex items-center transition duration-300 whitespace-nowrap"
                   >
-                    <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    Use My Location
+                    {t('reportIssue.form.location.useMyLocation')}
                   </button>
                 </div>
-                {useCurrentLocation && !formData.location && (
-                  <p className="mt-1 text-sm text-gray-500">Detecting your location...</p>
-                )}
-                <p className="mt-1 text-sm text-gray-500">
-                  Type an address to see suggestions or use your current location.
+                <p className="mt-2 text-sm text-gray-600 italic">
+                  {t('reportIssue.form.location.hint')}
                 </p>
               </div>
 
               {/* Description */}
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                  Description <span className="text-red-600">*</span>
+                <label htmlFor="description" className="block text-lg font-medium text-gray-800 mb-3">
+                  {t('reportIssue.form.description.label')} <span className="text-red-600">*</span>
                 </label>
                 <textarea
                   id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  rows="4"
-                  placeholder="Please describe the issue in detail"
-                  className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  rows="5"
+                  placeholder={t('reportIssue.form.description.placeholder')}
+                  className="w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                   required
                 ></textarea>
               </div>
 
               {/* Severity */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Severity
+                <label className="block text-lg font-medium text-gray-800 mb-3">
+                  {t('reportIssue.form.severity.label')}
                 </label>
-                <div className="flex space-x-4">
+                <div className="flex flex-wrap gap-x-8 gap-y-4">
                   {['low', 'medium', 'high'].map((severity) => (
-                    <label key={severity} className="flex items-center">
+                    <label key={severity} className="flex items-center cursor-pointer group">
                       <input
                         type="radio"
                         name="severity"
                         value={severity}
                         checked={formData.severity === severity}
                         onChange={handleChange}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                        className="sr-only"
                       />
-                      <span className="ml-2 text-gray-700 capitalize">{severity}</span>
+                      <div className={`w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center transition-colors ${
+                        formData.severity === severity
+                          ? severity === 'high' 
+                            ? 'border-red-500 bg-red-500' 
+                            : severity === 'medium'
+                            ? 'border-amber-500 bg-amber-500'
+                            : 'border-green-500 bg-green-500'
+                          : 'border-gray-300 group-hover:border-gray-400'
+                      }`}>
+                        {formData.severity === severity && (
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div>
+                        <span className={`font-medium ${
+                          severity === 'high' 
+                            ? 'text-red-700' 
+                            : severity === 'medium'
+                            ? 'text-amber-700'
+                            : 'text-green-700'
+                        }`}>
+                          {t(`reportIssue.form.severity.${severity}`)}
+                        </span>
+                        {severity === 'high' && (
+                          <span className="ml-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Urgent</span>
+                        )}
+                      </div>
                     </label>
                   ))}
                 </div>
@@ -366,44 +475,167 @@ const ReportIssuePage = () => {
 
               {/* Contact Email */}
               <div>
-                <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700 mb-1">
-                  Contact Email
+                <label htmlFor="contactEmail" className="block text-lg font-medium text-gray-800 mb-3">
+                  {t('reportIssue.form.contactEmail.label')}
                 </label>
-                <input
-                  type="email"
-                  id="contactEmail"
-                  name="contactEmail"
-                  value={formData.contactEmail}
-                  onChange={handleChange}
-                  placeholder="Your email (optional)"
-                  className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <p className="mt-1 text-sm text-gray-500">
-                  We'll only use this to follow up about this specific report if needed.
+                <div className="relative">
+                  <input
+                    type="email"
+                    id="contactEmail"
+                    name="contactEmail"
+                    value={formData.contactEmail}
+                    onChange={handleChange}
+                    placeholder={t('reportIssue.form.contactEmail.placeholder')}
+                    className="w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 pl-10"
+                  />
+                  <svg className="w-5 h-5 text-gray-500 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <p className="mt-2 text-sm text-gray-600 italic">
+                  {t('reportIssue.form.contactEmail.hint')}
                 </p>
               </div>
 
               {/* Submit Button */}
-              <div>
+              <div className="pt-4">
                 <button
                   type="submit"
                   disabled={submitting || !user}
-                  className={`w-full ${user ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'} text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center`}
+                  className={`w-full ${
+                    user ? 'bg-amber-600 hover:bg-amber-700' : 'bg-gray-400 cursor-not-allowed'
+                  } text-white font-semibold py-4 px-6 rounded-lg flex items-center justify-center text-lg transition duration-300`}
                 >
                   {submitting ? (
                     <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Submitting...
+                      {t('reportIssue.form.submitting')}
                     </>
                   ) : (
-                    'Submit Report'
+                    <>
+                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {t('reportIssue.form.submitButton')}
+                    </>
                   )}
                 </button>
               </div>
             </form>
+          </div>
+        )}
+        
+        {/* Information Section */}
+        {!submitted && (
+          <div className="mt-8 bg-blue-50 rounded-lg shadow-md p-6 border border-blue-100">
+            <h2 className="text-xl font-semibold text-blue-800 mb-4 flex items-center">
+              <svg className="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              What Happens After You Report?
+            </h2>
+            
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white p-5 rounded-lg shadow-sm">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-blue-700 font-bold text-xl">1</span>
+                </div>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">Verification</h3>
+                <p className="text-gray-600">Our team reviews your report to verify the issue and assess its severity.</p>
+              </div>
+              
+              <div className="bg-white p-5 rounded-lg shadow-sm">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-blue-700 font-bold text-xl">2</span>
+                </div>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">Action</h3>
+                <p className="text-gray-600">The issue is forwarded to appropriate authorities or added to our heat safety map.</p>
+              </div>
+              
+              <div className="bg-white p-5 rounded-lg shadow-sm">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-blue-700 font-bold text-xl">3</span>
+                </div>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">Updates</h3>
+                <p className="text-gray-600">You can track the status of your report in your profile, and we'll notify you of changes.</p>
+              </div>
+            </div>
+            
+            <div className="mt-6 bg-white p-5 rounded-lg border border-blue-100">
+              <h3 className="text-lg font-medium text-gray-800 mb-2 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Important Note
+              </h3>
+              <p className="text-gray-600">
+                For immediate emergencies like heat stroke or medical situations, please contact emergency services directly at <span className="font-semibold text-red-600">108</span> (ambulance) or <span className="font-semibold text-red-600">112</span> (general emergency).
+              </p>
+            </div>
+          </div>
+        )}
+        
+        {/* Common Issues Examples */}
+        {!submitted && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-semibold text-navy-900 mb-4">Common Heat Safety Issues</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="h-3 bg-blue-500"></div>
+                <div className="p-5">
+                  <div className="text-blue-500 mb-3">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">Broken Water Fountain</h3>
+                  <p className="text-gray-600 text-sm">Water fountains that are broken, contaminated, or not functioning properly during hot weather.</p>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="h-3 bg-amber-500"></div>
+                <div className="p-5">
+                  <div className="text-amber-500 mb-3">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">No Shade Available</h3>
+                  <p className="text-gray-600 text-sm">Public areas, bus stops, or playgrounds with no shade structures, trees, or protection from direct sun.</p>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="h-3 bg-red-500"></div>
+                <div className="p-5">
+                  <div className="text-red-500 mb-3">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">Hot Pavement</h3>
+                  <p className="text-gray-600 text-sm">Dangerously hot surfaces in public areas that could cause burns, especially to children or pets.</p>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="h-3 bg-purple-500"></div>
+                <div className="p-5">
+                  <div className="text-purple-500 mb-3">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">Cooling Center Issues</h3>
+                  <p className="text-gray-600 text-sm">Problems with cooling centers such as limited hours, overcrowding, or air conditioning failures.</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -1,10 +1,12 @@
-// src/components/auth/AuthModal.jsx
+// src/components/auth/AuthModal.jsx - Updated with translations
 import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import { useTranslation } from 'react-i18next';
 
 const AuthModal = ({ isOpen, onClose }) => {
   const [isLoginForm, setIsLoginForm] = useState(true);
+  const { t } = useTranslation();
   
   if (!isOpen) return null;
   
